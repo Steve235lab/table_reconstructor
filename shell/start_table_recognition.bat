@@ -1,0 +1,1 @@
+onmt_translate -data_type img -model E:/SteveCodeBase/Python/table_reconstructor/checkpoints/recognition/Recognition_All.pt -src_dir D:/DataSets/TableBank/Recognition/images -src D:/DataSets/TableBank/Recognition/annotations/src-all_test.txt -output E:/SteveCodeBase/Python/table_reconstructor/output/pred.txt -max_length 150 -beam_size 5 -gpu 0 -verbose -batch_size 8
