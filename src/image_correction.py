@@ -19,6 +19,7 @@ class ImageCorrection:
         self.output_path = output_path
         self.output_height = output_height
         self.output_width = output_width
+        self.table_corner = []
 
     def get_main_body(self):
         # 轮廓检测
@@ -45,18 +46,16 @@ class ImageCorrection:
         #         break
 
         # 展示结果
-        print("STEP 2: 获取轮廓")
         cv2.drawContours(self.img, [screenCnt], -1, (0, 255, 0), 20)
-        cv2.imshow("Outline", self.img)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
 
-    def save_img(self):
-        cv2.imwrite(self.output_path + self.img_name, self.img)
+    def save_img(self, img_name: str, img):
+        cv2.imwrite(self.output_path + img_name, img)
 
 
 if __name__ == "__main__":
     test_img_path = "../test/table_a_0.jpg"
     ic = ImageCorrection(test_img_path, '../output/image_correction/')
-    ic.get_main_body()
-    ic.save_img()
+    # ic.get_main_body()
+    # ic.save_img()
+    cv2.imshow('bin', ic.img_binary)
+    cv2.waitKey()
