@@ -2,6 +2,7 @@ import os
 from PIL import Image, ImageFont, ImageChops
 from handright import Template, handwrite
 import random
+import pandas as pd
 
 
 # 生成"管孔材质"列的数据
@@ -9,11 +10,14 @@ import random
 # output_path = "/Users/steve235lab/Documents/DataSets/artificial_CN_handwriting/col_material/"
 
 # 生成"光、电缆权属（客户信息）"列的数据
-text_list = ["移动", "联通", "信息", "未知", "有线"]
-output_path = "/Users/steve235lab/Documents/DataSets/artificial_CN_handwriting/col_client/"
+# text_list = ["移动", "联通", "信息", "未知", "有线"]
+# output_path = "/Users/steve235lab/Documents/DataSets/artificial_CN_handwriting/col_client/"
 
 # 生成表头部分"路名"数据
-# TODO: 想办法获取上海市所有路名
+road_name_table = pd.read_excel("../references/road_names_of_sh.xlsx", sheet_name="Sheet1")
+text_list = road_name_table["路名"].unique()
+output_path = "/Users/steve235lab/Documents/DataSets/artificial_CN_handwriting/road_name/"
+
 
 template = Template(
     background=Image.new(mode="1", size=(900, 1000), color=1),
