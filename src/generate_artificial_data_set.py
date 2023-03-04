@@ -4,8 +4,17 @@ from handright import Template, handwrite
 import random
 
 
-text_list = ["硅", "钢", "混凝土"]
-output_path = "/Users/steve235lab/Documents/DataSets/artificial_CN_handwriting/col_material/"
+# 生成"管孔材质"列的数据
+# text_list = ["硅", "钢", "混凝土"]
+# output_path = "/Users/steve235lab/Documents/DataSets/artificial_CN_handwriting/col_material/"
+
+# 生成"光、电缆权属（客户信息）"列的数据
+text_list = ["移动", "联通", "信息", "未知", "有线"]
+output_path = "/Users/steve235lab/Documents/DataSets/artificial_CN_handwriting/col_client/"
+
+# 生成表头部分"路名"数据
+# TODO: 想办法获取上海市所有路名
+
 template = Template(
     background=Image.new(mode="1", size=(900, 1000), color=1),
     font=ImageFont.truetype("../font/QUIETSKY.ttf", size=100),
@@ -15,7 +24,7 @@ template = Template(
     top_margin=0,
     right_margin=0,
     bottom_margin=0,
-    word_spacing=15,
+    word_spacing=5,
     line_spacing_sigma=6,  # 行间距随机扰动
     font_size_sigma=20,  # 字体大小随机扰动
     word_spacing_sigma=3,  # 字间距随机扰动
