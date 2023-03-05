@@ -1,18 +1,4 @@
-import pickle
-import os
-
 import torch
-import torch.nn as nn
-import torch.optim as optim
-
-from tensorboardX import SummaryWriter
-from torchvision import transforms
-from torchsummary import summary
-
-from hwdb import HWDB
-from model import ConvNet
-from ResNet_101 import ResNet101
-from ResNet_152 import ResNet152
 
 
 def valid(epoch, net, test_loarder, writer, device='cuda:0'):
