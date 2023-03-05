@@ -7,7 +7,7 @@ def get_road_names() -> pd.Series:
 
 def get_road_sections_by_road_name(road_name: str) -> pd.Series:
     road_table = pd.read_excel("../references/road_names_of_sh.xlsx", sheet_name="Sheet1")
-    road_sections = road_table[road_table["路名"] == road_name]["路段"].unique()
+    road_sections = pd.Series(road_table[road_table["路名"] == road_name]["路段"].unique())
     return road_sections
 
 

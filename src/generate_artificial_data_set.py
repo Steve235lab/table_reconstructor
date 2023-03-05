@@ -1,23 +1,34 @@
 import os
+import random
+
+import pandas as pd
 from PIL import Image, ImageFont, ImageChops
 from handright import Template, handwrite
-import random
-import pandas as pd
+
+from cell_text_classifier import get_road_sections_by_road_name
 
 
-# 生成"管孔材质"列的数据
-# text_list = ["硅", "硅管", "钢", "钢管", "波纹管", "波", "PVC", "PE"]
-# output_path = "/Users/steve235lab/Documents/DataSets/artificial_CN_handwriting/col_material/"
+def text_to_image(text: str, output_path: str, image_num: int = 100):
+    if output_path[-1] != "/":
+        output_path += "/"
+    if not os.path.exists(output_path + text):
+        os.mkdir(output_path + text)
+    for i in range(image_num):
+        images = handwrite(text=text, template=template, seed=random.random())
+        for _, img in enumerate(images):
+            if isinstance(img, Image.Image):
+                inverted_img = ImageChops.invert(img.convert("RGB"))
+                box = inverted_img.getbbox()
+                cropped_im = img.crop(box)
+                # im.show()
+                cropped_im.save(output_path + text + "/{}.jpg".format(i))
 
-# 生成"光、电缆权属（客户信息）"列的数据
-# text_list = ["移动", "联通", "信息", "未知", "有线"]
-# output_path = "/Users/steve235lab/Documents/DataSets/artificial_CN_handwriting/col_client/"
 
-# 生成表头部分"路名"数据
-road_name_table = pd.read_excel("../references/road_names_of_sh.xlsx", sheet_name="Sheet1")
-text_list = road_name_table["路名"].unique()
-print(len(text_list))
-output_path = "/Users/steve235lab/Documents/DataSets/artificial_CN_handwriting/road_name/"
+def generate_road_section_data(road_name: str):
+    output_path = "/Users/steve235lab/Documents/DataSets/artificial_CN_handwriting/road_section/" + road_name
+    os.mkdir(output_path)
+    road_sections = get_road_sections_by_road_name(road_name)
+    road_sections.apply(func=text_to_image, args=(output_path, 100))
 
 
 template = Template(
@@ -40,18 +51,36 @@ template = Template(
     perturb_theta_sigma=0.05,  # 笔画旋转偏移随机扰动
 )
 
+# 生成"管孔材质"列的数据
+# text_list = ["硅", "硅管", "钢", "钢管", "波纹管", "波", "PVC", "PE"]
+# output_path = "/Users/steve235lab/Documents/DataSets/artificial_CN_handwriting/col_material/"
 
-if __name__ == "__main__":
-    for text in text_list:
-        if not os.path.exists(output_path + text):
-            os.mkdir(output_path + text)
-        for i in range(100):
-            images = handwrite(text=text, template=template, seed=random.random())
-            for _, img in enumerate(images):
-                if isinstance(img, Image.Image):
-                    inverted_img = ImageChops.invert(img.convert("RGB"))
-                    box = inverted_img.getbbox()
-                    cropped_im = img.crop(box)
-                    # im.show()
-                    cropped_im.save(output_path + text + "/{}.jpg".format(i))
+# 生成"光、电缆权属（客户信息）"列的数据
+# text_list = ["移动", "联通", "信息", "未知", "有线"]
+# output_path = "/Users/steve235lab/Documents/DataSets/artificial_CN_handwriting/col_client/"
 
+# 生成表头部分"路名"数据
+# road_name_table = pd.read_excel("../references/road_names_of_sh.xlsx", sheet_name="Sheet1")
+# text_list = road_name_table["路名"].unique()
+# print(len(text_list))
+# output_path = "/Users/steve235lab/Documents/DataSets/artificial_CN_handwriting/road_name/"
+
+# if __name__ == "__main__":
+#     for text in text_list:
+#         if not os.path.exists(output_path + text):
+#             os.mkdir(output_path + text)
+#         for i in range(100):
+#             images = handwrite(text=text, template=template, seed=random.random())
+#             for _, img in enumerate(images):
+#                 if isinstance(img, Image.Image):
+#                     inverted_img = ImageChops.invert(img.convert("RGB"))
+#                     box = inverted_img.getbbox()
+#                     cropped_im = img.crop(box)
+#                     # im.show()
+#                     cropped_im.save(output_path + text + "/{}.jpg".format(i))
+
+
+# 生成表头部分"路段"数据
+road_name_table = pd.read_excel("../references/road_names_of_sh.xlsx", sheet_name="Sheet1")
+road_name_list = pd.Series(road_name_table["路名"].unique())
+road_name_list.apply(generate_road_section_data)
