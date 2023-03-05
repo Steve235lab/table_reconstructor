@@ -6,7 +6,7 @@ import pandas as pd
 
 
 # 生成"管孔材质"列的数据
-# text_list = ["硅", "钢", "混凝土"]
+# text_list = ["硅", "硅管", "钢", "钢管", "波纹管", "波", "PVC", "PE"]
 # output_path = "/Users/steve235lab/Documents/DataSets/artificial_CN_handwriting/col_material/"
 
 # 生成"光、电缆权属（客户信息）"列的数据
@@ -16,6 +16,7 @@ import pandas as pd
 # 生成表头部分"路名"数据
 road_name_table = pd.read_excel("../references/road_names_of_sh.xlsx", sheet_name="Sheet1")
 text_list = road_name_table["路名"].unique()
+print(len(text_list))
 output_path = "/Users/steve235lab/Documents/DataSets/artificial_CN_handwriting/road_name/"
 
 
@@ -30,7 +31,7 @@ template = Template(
     bottom_margin=0,
     word_spacing=5,
     line_spacing_sigma=6,  # 行间距随机扰动
-    font_size_sigma=20,  # 字体大小随机扰动
+    font_size_sigma=10,  # 字体大小随机扰动
     word_spacing_sigma=3,  # 字间距随机扰动
     start_chars="“（[<",  # 特定字符提前换行，防止出现在行尾
     end_chars="，。",  # 防止特定字符因排版算法的自动换行而出现在行首
